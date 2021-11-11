@@ -22,5 +22,6 @@ print("imgs.shape:", imgs.shape)
 optim = SGD()
 model.compile(loss="categorical_crossentropy", optimizer=optim, metrics=["accuracy"])
 
-predictions = model.predict_classes(imgs)
-print("predictions:", predictions)
+predictions=model.predict(imgs) 
+classes=np.argmax(predictions,axis=1)
+print("predictions:", classes)
