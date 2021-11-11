@@ -59,9 +59,7 @@ def build_model():
 
     model.summary()
 
-# use TensorBoard, princess Aurora!
 callbacks = [
-  # Write TensorBoard logs to `./logs` directory
   tf.keras.callbacks.TensorBoard(log_dir='./logs')
 ]
 
