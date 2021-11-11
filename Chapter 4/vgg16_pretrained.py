@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+
 # prebuild model with pre-trained weights on imagenet
 model = VGG16(weights='imagenet', include_top=True)
 model.compile(optimizer='sgd', loss='categorical_crossentropy')
@@ -18,5 +21,5 @@ out = model.predict(im)
 index = np.argmax(out)
 print(index)
 
-#plt.plot(out.ravel())
-#plt.show()
+plt.plot(out.ravel())
+plt.show()
