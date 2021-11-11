@@ -24,7 +24,7 @@ class LeNet:
 
 
 # network and training
-EPOCHS = 5
+EPOCHS = 20
 BATCH_SIZE = 128
 VERBOSE = 1
 OPTIMIZER = tf.keras.optimizers.Adam()
