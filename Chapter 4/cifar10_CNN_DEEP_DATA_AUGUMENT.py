@@ -73,12 +73,18 @@ datagen = ImageDataGenerator(
     horizontal_flip=True,
     )
 datagen.fit(x_train)
+
+# Tensorboard Callback
+callbacks = [
+  tf.keras.callbacks.TensorBoard(log_dir='./logs')
+]
  
 #train
 batch_size = 64
-model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size),
+model.fit(datagen.flow(x_train, y_train, batch_size=batch_size),
                     epochs=EPOCHS,
-                    verbose=1,validation_data=(x_test,y_test))
+                    verbose=1,validation_data=(x_test,y_test),
+                    callbacks=callbacks)
 #save to disk
 model_json = model.to_json()
 with open('model.json', 'w') as json_file:
