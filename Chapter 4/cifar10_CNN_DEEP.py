@@ -58,7 +58,12 @@ def build_model():
     return model
 
     model.summary()
- 
+
+# use TensorBoard, princess Aurora!
+callbacks = [
+  # Write TensorBoard logs to `./logs` directory
+  tf.keras.callbacks.TensorBoard(log_dir='./logs')
+]
 
 (x_train, y_train, x_test, y_test) = load_data()
 model = build_model()
@@ -69,7 +74,8 @@ model.compile(loss='categorical_crossentropy',
 #train
 batch_size = 64
 model.fit(x_train, y_train, batch_size=batch_size,
-    epochs=EPOCHS, validation_data=(x_test,y_test)) 
+    epochs=EPOCHS, validation_data=(x_test,y_test),
+    callbacks=callbacks) 
 score = model.evaluate(x_test, y_test,
                      batch_size=BATCH_SIZE)
 print("\nTest score:", score[0])
