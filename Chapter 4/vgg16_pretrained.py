@@ -12,7 +12,7 @@ model = VGG16(weights='imagenet', include_top=True)
 model.compile(optimizer='sgd', loss='categorical_crossentropy')
 
 # resize into VGG16 trained images' format
-im = cv2.resize(cv2.imread('steam-locomotive.jpg'), (224, 224))
+im = cv2.resize(cv2.imread('MyCat.jpg'), (224, 224))
 im = np.expand_dims(im, axis=0)
 im.astype(np.float32)
 
