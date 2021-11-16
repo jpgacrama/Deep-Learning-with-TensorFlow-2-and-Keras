@@ -47,9 +47,15 @@ model.compile(optimizer = "adam", loss = "binary_crossentropy",
  metrics = ["accuracy"]
 )
 
+# Tensorboard Callback
+callbacks = [
+  tf.keras.callbacks.TensorBoard(log_dir='./logs')
+]
+
 score = model.fit(X_train, y_train,
  epochs= EPOCHS,
  batch_size = BATCH_SIZE,
+ callbacks=callbacks,
  validation_data = (X_test, y_test)
 )
 
