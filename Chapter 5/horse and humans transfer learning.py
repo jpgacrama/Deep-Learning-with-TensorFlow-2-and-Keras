@@ -9,13 +9,9 @@ import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt
 
 SPLIT_WEIGHTS = (8, 1, 1)
-(raw_train, test), metadata = tfds.load(
-    'horses_or_humans', split=['train[:80%]', 'train[80%:]'], with_info=True, as_supervised=True)
-
-test_middle_index = len(test) // 2
-list_test = list(test)
-raw_validation = list_test[:test_middle_index]
-raw_test =  list_test[test_middle_index:]
+(raw_train, raw_validation, raw_test), metadata = tfds.load(
+    'horses_or_humans', split=['train[:80%]', 'train[80%:90%]', 'train[90%:]'],
+    with_info=True, as_supervised=True)
 
 
 # In[8]:
