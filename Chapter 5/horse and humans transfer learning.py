@@ -8,25 +8,14 @@ import numpy as np
 import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt
 
-def get_dataset_partitions_pd(df, train_split=0.8, val_split=0.1, test_split=0.1):
-    assert (train_split + test_split + val_split) == 1
-    
-    # Only allows for equal validation and test splits
-    assert val_split == test_split 
-
-    # Specify seed to always have the same split distribution between runs
-    df_sample = df.sample(frac=1, random_state=12)
-    indices_or_sections = [int(train_split * len(df)), int((1 - val_split - test_split) * len(df))]
-    
-    train_ds, val_ds, test_ds = np.split(df_sample, indices_or_sections)
-    
-    return train_ds, val_ds, test_ds
-
 SPLIT_WEIGHTS = (8, 1, 1)
-data, metadata = tfds.load(
-    'horses_or_humans', with_info=True, as_supervised=True)
+(raw_train, test), metadata = tfds.load(
+    'horses_or_humans', split=['train[:80%]', 'train[80%:]'], with_info=True, as_supervised=True)
 
-raw_train, raw_validation, raw_test = get_dataset_partitions_pd(data)
+test_middle_index = len(test) // 2
+list_test = list(test)
+raw_validation = list_test[:test_middle_index]
+raw_test =  list_test[test_middle_index:]
 
 
 # In[8]:
