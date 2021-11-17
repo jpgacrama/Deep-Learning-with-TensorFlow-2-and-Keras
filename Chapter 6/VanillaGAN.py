@@ -15,7 +15,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import initializers
 from tensorflow.keras.callbacks import TensorBoard
 
-import time
+import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -83,9 +83,11 @@ gLosses = []
 
 # In[]:
 
-tensorboard = TensorBoard(log_dir="logs/{}".format(time.time()))
-tensorboard.set_model(generator)
-tensorboard.set_model(discriminator)
+current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+d_loss_dir = 'logs/' + current_time + '/d_loss'
+g_loss_dir = 'logs/' + current_time + '/g_loss'
+d_loss_summary_writer = tf.summary.create_file_writer(d_loss_dir)
+g_loss_summary_writer = tf.summary.create_file_writer(g_loss_dir)
 
 
 # In[6]:
@@ -124,9 +126,6 @@ def train(epochs=1, batchSize=128):
     print ('Batch size:', batchSize)
     print ('Batches per epoch:', batchCount)
 
-    # Create Tensorboard
-    writer = tf.summary.create_file_writer(tensorboard.log_dir)
-
     for e in range(1, epochs+1):
         print ('-'*15, 'Epoch %d' % e, '-'*15)
         for _ in range(batchCount):
@@ -159,9 +158,11 @@ def train(epochs=1, batchSize=128):
         gLosses.append(gloss)
 
         # Write losses to Tensorboard
-        with writer.as_default():
-            tf.summary.scalar(tensorboard, 'dloss', dloss, step=e)
-            tf.summary.scalar(tensorboard, 'gloss', gloss, step=e)
+        with d_loss_summary_writer.as_default():
+            tf.summary.scalar('Discriminator Loss', dloss, step=e)
+        
+        with g_loss_summary_writer.as_default():
+            tf.summary.scalar('Generator Loss', gloss, step=e)
 
         if e == 1 or e % 20 == 0:
             saveGeneratedImages(e)
