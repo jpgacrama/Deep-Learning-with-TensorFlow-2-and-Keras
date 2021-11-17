@@ -114,7 +114,7 @@ def saveGeneratedImages(epoch, examples=100, dim=(10, 10), figsize=(10, 10)):
         plt.axis('off')
     plt.tight_layout()
     plt.savefig('images/gan_generated_image_epoch_%d.png' % epoch)
-    
+
 
 # In[8]:
 
@@ -123,6 +123,9 @@ def train(epochs=1, batchSize=128):
     print ('Epochs:', epochs)
     print ('Batch size:', batchSize)
     print ('Batches per epoch:', batchCount)
+
+    # Create Tensorboard
+    writer = tf.summary.create_file_writer(tensorboard.log_dir)
 
     for e in range(1, epochs+1):
         print ('-'*15, 'Epoch %d' % e, '-'*15)
@@ -156,10 +159,9 @@ def train(epochs=1, batchSize=128):
         gLosses.append(gloss)
 
         # Write losses to Tensorboard
-        writer = tf.summary.create_file_writer(tensorboard.log_dir)
         with writer.as_default():
-            tf.summary.scalar(tensorboard, 'dloss', dloss, e)
-            tf.summary.scalar(tensorboard, 'gloss', gloss, e)
+            tf.summary.scalar(tensorboard, 'dloss', dloss, step=e)
+            tf.summary.scalar(tensorboard, 'gloss', gloss, step=e)
 
         if e == 1 or e % 20 == 0:
             saveGeneratedImages(e)
