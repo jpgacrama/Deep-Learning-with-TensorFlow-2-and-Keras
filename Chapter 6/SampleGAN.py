@@ -6,7 +6,7 @@ from numpy import ones
 from numpy.random import randn
 from numpy.random import randint
 from keras.datasets.mnist import load_data
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Reshape
@@ -14,7 +14,7 @@ from keras.layers import Flatten
 from keras.layers import Conv2D
 from keras.layers import Conv2DTranspose
 from keras.layers import LeakyReLU
-from keras.initializers import RandomNormal
+from tensorflow.keras.initializers import RandomNormal
 from matplotlib import pyplot
  
 # define the standalone discriminator model
@@ -33,7 +33,7 @@ def define_discriminator(in_shape=(28,28,1)):
 	model.add(Flatten())
 	model.add(Dense(1, activation='sigmoid'))
 	# compile model
-	opt = Adam(lr=0.0002, beta_1=0.5)
+	opt = Adam(learning_rate=0.0002, beta_1=0.5)
 	model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 	return model
  
@@ -69,7 +69,7 @@ def define_gan(generator, discriminator):
 	# add the discriminator
 	model.add(discriminator)
 	# compile model
-	opt = Adam(lr=0.0002, beta_1=0.5)
+	opt = Adam(learning_rate=0.0002, beta_1=0.5)
 	model.compile(loss='binary_crossentropy', optimizer=opt)
 	return model
  
