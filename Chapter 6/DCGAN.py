@@ -188,7 +188,7 @@ class DCGAN():
         plt.close()
 
     # create a line plot of loss for the gan and save to file
-    def plot_history(d_hist_real, d_hist_fake, g_hist, a1_hist, a2_hist):
+    def plot_history(self, d_hist_real, d_hist_fake, g_hist, d_acc_real, d_acc_fake):
         # plot loss
         plt.subplot(2, 1, 1)
         plt.plot(d_hist_real, label='d-real')
@@ -197,8 +197,8 @@ class DCGAN():
         plt.legend()
         # plot discriminator accuracy
         plt.subplot(2, 1, 2)
-        plt.plot(a1_hist, label='acc-real')
-        plt.plot(a2_hist, label='acc-fake')
+        plt.plot(d_acc_real, label='acc-real')
+        plt.plot(d_acc_fake, label='acc-fake')
         plt.legend()
         # save plot to file
         plt.savefig('results_baseline/plot_line_plot_loss.png')
