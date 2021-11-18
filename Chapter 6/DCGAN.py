@@ -13,9 +13,7 @@ from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import Adam
 
 import matplotlib.pyplot as plt
-
-import sys
-
+import os
 import numpy as np
 
 
@@ -111,32 +109,7 @@ class DCGAN():
 
         return Model(img, validity)
 
-    # load mnist images
-    def load_real_samples():
-        # load dataset
-        (trainX, trainy), (_, _) = mnist.load_data()
-        # expand to 3d, e.g. add channels
-        X = np.expand_dims(trainX, axis=-1)
-        # select all of the examples for a given class
-        selected_ix = trainy == 8
-        X = X[selected_ix]
-        # convert from ints to floats
-        X = X.astype('float32')
-        # scale from [0,255] to [-1,1]
-        X = (X - 127.5) / 127.5
-        return X
-
-    # select real samples
-    def generate_real_samples(dataset, n_samples):
-        # choose random instances
-        ix = np.randint(0, dataset.shape[0], n_samples)
-        # select images
-        X = dataset[ix]
-        # generate class labels
-        y = np.ones((n_samples, 1))
-        return X, y
-
-    def __train__(self, epochs, batch_size=256, save_interval=50):
+    def train(self, epochs, batch_size=256, save_interval=50):
 
         # Load the dataset
         (X_train, _), (_, _) = mnist.load_data()
@@ -148,6 +121,9 @@ class DCGAN():
         # Adversarial ground truths
         valid = np.ones((batch_size, 1))
         fake = np.zeros((batch_size, 1))
+
+        # Prepare list for storing the historical values
+        d_loss_real_hist, d_loss_fake_hist, g_loss_hist, d_accuracy_real_hist, d_accuracy_fake_hist = list(), list(), list(), list(), list()
 
         for epoch in range(epochs):
 
@@ -164,9 +140,10 @@ class DCGAN():
             gen_imgs = self.generator.predict(noise)
 
             # Train the discriminator (real classified as ones and generated as zeros)
-            d_loss_real = self.discriminator.train_on_batch(imgs, valid)
-            d_loss_fake = self.discriminator.train_on_batch(gen_imgs, fake)
+            d_loss_real, d_accuracy_real = self.discriminator.train_on_batch(imgs, valid)
+            d_loss_fake, d_accuracy_fake = self.discriminator.train_on_batch(gen_imgs, fake)
             d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
+
 
             # ---------------------
             #  Train Generator
@@ -175,12 +152,22 @@ class DCGAN():
             # Train the generator (wants discriminator to mistake images as real)
             g_loss = self.combined.train_on_batch(noise, valid)
 
+            # Append losses for plotting later
+            d_loss_real_hist.append(d_loss_real)
+            d_loss_fake_hist.append(d_loss_fake)
+            g_loss_hist.append(g_loss)
+            d_accuracy_real_hist.append(d_accuracy_real)
+            d_accuracy_fake_hist.append(d_accuracy_fake)
+
             # Plot the progress
-            print ("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
+            print ("%d [D loss Real: %f, D loss Fake: %f] [G loss: %f] [Acc Real: %.2f%%, Acc Fake: %.2f%%]" 
+                % (epoch, d_loss_real, d_loss_fake, g_loss, 100 * d_accuracy_real, 100 * d_accuracy_fake))
 
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
                 self.save_imgs(epoch)
+        
+        self.plot_history(d_loss_real_hist, d_loss_fake_hist, g_loss_hist, d_accuracy_real_hist, d_accuracy_fake_hist)
 
     def save_imgs(self, epoch):
         r, c = 5, 5
@@ -197,13 +184,32 @@ class DCGAN():
                 axs[i,j].imshow(gen_imgs[cnt, :,:,0], cmap='gray')
                 axs[i,j].axis('off')
                 cnt += 1
-        fig.savefig("images/dcgan_mnist_%d.png" % epoch)
+        fig.savefig("DCGAN_images/dcgan_mnist_%d.png" % epoch)
+        plt.close()
+
+    # create a line plot of loss for the gan and save to file
+    def plot_history(d_hist_real, d_hist_fake, g_hist, a1_hist, a2_hist):
+        # plot loss
+        plt.subplot(2, 1, 1)
+        plt.plot(d_hist_real, label='d-real')
+        plt.plot(d_hist_fake, label='d-fake')
+        plt.plot(g_hist, label='gen')
+        plt.legend()
+        # plot discriminator accuracy
+        plt.subplot(2, 1, 2)
+        plt.plot(a1_hist, label='acc-real')
+        plt.plot(a2_hist, label='acc-fake')
+        plt.legend()
+        # save plot to file
+        plt.savefig('results_baseline/plot_line_plot_loss.png')
         plt.close()
 
 
 # In[3]:
 
+# make folder for results
+os.makedirs('DCGAN_images', exist_ok=True)
 
 dcgan = DCGAN(28,28,1)
-# dcgan.train(epochs=5000, batch_size=256, save_interval=50)
+dcgan.train(epochs=1000, batch_size=256, save_interval=50)
 
