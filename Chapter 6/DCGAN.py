@@ -15,6 +15,7 @@ from tensorflow.keras.optimizers import Adam
 import matplotlib.pyplot as plt
 import os
 import numpy as np
+import shutil
 
 # In[]:
 
@@ -32,7 +33,7 @@ class DCGAN():
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
         self.latent_dim = z
 
-        optimizer = Adam(0.0002, 0.5)
+        optimizer = Adam(0.0003, 0.5)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
@@ -211,8 +212,9 @@ class DCGAN():
 # In[3]:
 
 # make folder for results
+shutil.rmtree(f'{FOLDER}')
 os.makedirs(f'{FOLDER}', exist_ok=True)
 
 dcgan = DCGAN(28,28,1)
-dcgan.train(epochs=5000, batch_size=128, save_interval=50)
+dcgan.train(epochs=400, batch_size=128, save_interval=50)
 
