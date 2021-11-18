@@ -16,6 +16,9 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 
+# In[]:
+
+FOLDER = 'DCGAN_images'
 
 # In[2]:
 
@@ -201,15 +204,15 @@ class DCGAN():
         plt.plot(d_acc_fake, label='acc-fake')
         plt.legend()
         # save plot to file
-        plt.savefig('results_baseline/plot_line_plot_loss.png')
+        plt.savefig(f'{FOLDER}/plot_line_plot_loss.png')
         plt.close()
 
 
 # In[3]:
 
 # make folder for results
-os.makedirs('DCGAN_images', exist_ok=True)
+os.makedirs(f'{FOLDER}', exist_ok=True)
 
 dcgan = DCGAN(28,28,1)
-dcgan.train(epochs=1000, batch_size=256, save_interval=50)
+dcgan.train(epochs=400, batch_size=128, save_interval=50)
 
