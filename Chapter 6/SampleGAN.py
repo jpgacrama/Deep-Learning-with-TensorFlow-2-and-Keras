@@ -1,4 +1,5 @@
 # example of training a stable gan for generating a handwritten digit
+import os
 from os import makedirs
 from numpy import expand_dims
 from numpy import zeros
@@ -16,6 +17,8 @@ from keras.layers import Conv2DTranspose
 from keras.layers import LeakyReLU
 from tensorflow.keras.initializers import RandomNormal
 from matplotlib import pyplot
+
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
  
 # define the standalone discriminator model
 def define_discriminator(in_shape=(28,28,1)):
