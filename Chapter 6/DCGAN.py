@@ -214,5 +214,5 @@ class DCGAN():
 os.makedirs(f'{FOLDER}', exist_ok=True)
 
 dcgan = DCGAN(28,28,1)
-dcgan.train(epochs=400, batch_size=128, save_interval=50)
+dcgan.train(epochs=5000, batch_size=128, save_interval=50)
 
