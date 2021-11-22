@@ -214,9 +214,9 @@ class DCGAN():
 # In[3]:
 
 # make folder for results
-shutil.rmtree(f'{FOLDER}', ignore_errors=True))
+shutil.rmtree(f'{FOLDER}', ignore_errors=True)
 os.makedirs(f'{FOLDER}', exist_ok=True)
 
 dcgan = DCGAN(28,28,1)
-dcgan.train(epochs=1000, batch_size=128, save_interval=50)
+dcgan.train(epochs=1000, batch_size=256, save_interval=50)
 
