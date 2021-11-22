@@ -19,6 +19,8 @@ from tensorflow.keras.initializers import RandomNormal
 from matplotlib import pyplot
 
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+
+FOLDER = 'results_baseline'
  
 # define the standalone discriminator model
 def define_discriminator(in_shape=(28,28,1)):
@@ -134,10 +136,10 @@ def summarize_performance(step, g_model, latent_dim, n_samples=100):
 		# plot raw pixel data
 		pyplot.imshow(X[i, :, :, 0], cmap='gray_r')
 	# save plot to file
-	pyplot.savefig('results_baseline/generated_plot_%03d.png' % (step+1))
+	pyplot.savefig(f'{FOLDER}/generated_plot_%03d.png' % (step+1))
 	pyplot.close()
 	# save the generator model
-	g_model.save('results_baseline/model_%03d.h5' % (step+1))
+	g_model.save(f'{FOLDER}/model_%03d.h5' % (step+1))
  
 # create a line plot of loss for the gan and save to file
 def plot_history(d1_hist, d2_hist, g_hist, a1_hist, a2_hist):
@@ -153,7 +155,7 @@ def plot_history(d1_hist, d2_hist, g_hist, a1_hist, a2_hist):
 	pyplot.plot(a2_hist, label='acc-fake')
 	pyplot.legend()
 	# save plot to file
-	pyplot.savefig('results_baseline/plot_line_plot_loss.png')
+	pyplot.savefig(f'{FOLDER}/plot_line_plot_loss.png')
 	pyplot.close()
  
 # train the generator and discriminator
@@ -197,7 +199,7 @@ def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs=10, n_batch
 	plot_history(d1_hist, d2_hist, g_hist, a1_hist, a2_hist)
  
 # make folder for results
-makedirs('results_baseline', exist_ok=True)
+makedirs(f'{FOLDER}', exist_ok=True)
 # size of the latent space
 latent_dim = 50
 # create the discriminator

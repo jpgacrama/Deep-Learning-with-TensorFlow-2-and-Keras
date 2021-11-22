@@ -215,6 +215,6 @@ class DCGAN():
 shutil.rmtree(f'{FOLDER}')
 os.makedirs(f'{FOLDER}', exist_ok=True)
 
-dcgan = DCGAN(28,28,1)
-dcgan.train(epochs=400, batch_size=128, save_interval=50)
+dcgan = DCGAN(28,28,1,100)
+dcgan.train(epochs=400, batch_size=256, save_interval=50)
 
