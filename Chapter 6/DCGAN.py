@@ -17,6 +17,8 @@ import os
 import numpy as np
 import shutil
 
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+
 # In[]:
 
 FOLDER = 'DCGAN_images'
