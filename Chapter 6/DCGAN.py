@@ -17,6 +17,8 @@ import os
 import numpy as np
 import shutil
 
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+
 # In[]:
 
 FOLDER = 'DCGAN_images'
@@ -212,7 +214,7 @@ class DCGAN():
 # In[3]:
 
 # make folder for results
-shutil.rmtree(f'{FOLDER}')
+shutil.rmtree(f'{FOLDER}', ignore_errors=True)
 os.makedirs(f'{FOLDER}', exist_ok=True)
 
 dcgan = DCGAN(28,28,1,100)
