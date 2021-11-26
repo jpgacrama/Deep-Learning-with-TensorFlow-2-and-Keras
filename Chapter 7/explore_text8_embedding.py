@@ -1,4 +1,9 @@
-from gensim.models import KeyedVectors
+import gensim.downloader as api
+from gensim.models import KeyedVectors, Word2Vec
+
+dataset = api.load('text8')
+model = Word2Vec(dataset)
+model.save('data/text8-word2vec.bin')
 
 def print_most_similar(word_conf_pairs, k):
     for i, (word, conf) in enumerate(word_conf_pairs):
