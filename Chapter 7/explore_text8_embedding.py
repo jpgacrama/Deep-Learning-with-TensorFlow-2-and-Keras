@@ -3,12 +3,15 @@ import os
 from gensim.models import KeyedVectors, Word2Vec
 
 DATA = 'data'
+WORD2VEC_BIN = f'{DATA}/text8-word2vec.bin'
 
 dataset = api.load('text8')
 model = Word2Vec(dataset)
 if not os.path.exists(DATA):
     os.mkdir(DATA) 
-model.save('data/text8-word2vec.bin')
+
+if not os.path.exists(WORD2VEC_BIN):
+    model.save(WORD2VEC_BIN)
 
 def print_most_similar(word_conf_pairs, k):
     for i, (word, conf) in enumerate(word_conf_pairs):
@@ -20,11 +23,11 @@ def print_most_similar(word_conf_pairs, k):
 
 
 
-model = KeyedVectors.load("data/text8-word2vec.bin")
+model = KeyedVectors.load(WORD2VEC_BIN)
 word_vectors = model.wv
 
 # get words in the vocabulary
-words = word_vectors.vocab.keys()
+words = list(word_vectors.index_to_key)
 print([x for i, x in enumerate(words) if i < 10])
 assert("king" in words)
 
