@@ -1,8 +1,13 @@
 import gensim.downloader as api
+import os
 from gensim.models import KeyedVectors, Word2Vec
+
+DATA = 'data'
 
 dataset = api.load('text8')
 model = Word2Vec(dataset)
+if not os.path.exists(DATA):
+    os.mkdir(DATA) 
 model.save('data/text8-word2vec.bin')
 
 def print_most_similar(word_conf_pairs, k):
