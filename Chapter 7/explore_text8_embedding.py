@@ -72,5 +72,5 @@ print("distance(singapore, malaysia) = {:.3f}".format(
 vec_song = word_vectors["song"]
 print("\n# output vector obtained directly, shape:", vec_song.shape)
 
-vec_song_2 = word_vectors.word_vec("song", use_norm=True)
+vec_song_2 = word_vectors.get_vector("song", norm=True)
 print("# output vector obtained using word_vec, shape:", vec_song_2.shape)
