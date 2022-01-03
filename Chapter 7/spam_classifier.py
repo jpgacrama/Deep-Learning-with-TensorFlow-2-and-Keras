@@ -2,7 +2,6 @@ import argparse
 import gensim.downloader as api
 import numpy as np
 import os
-import shutil
 import tensorflow as tf
 
 from sklearn.metrics import accuracy_score, confusion_matrix
