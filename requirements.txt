@@ -49,6 +49,7 @@ ipython-genutils==0.2.0
 ipywidgets @ file:///home/conda/feedstock_root/build_artifacts/ipywidgets_1631590360471/work
 jedi @ file:///Users/runner/miniforge3/conda-bld/jedi_1637175418640/work
 Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1636510082894/work
+joblib==1.1.0
 jsonschema @ file:///home/conda/feedstock_root/build_artifacts/jsonschema-meta_1640026479618/work
 jupyter @ file:///Users/runner/miniforge3/conda-bld/jupyter_1637233473259/work
 jupyter-client @ file:///home/conda/feedstock_root/build_artifacts/jupyter_client_1637611911738/work
@@ -102,6 +103,7 @@ pyzmq @ file:///Users/runner/miniforge3/conda-bld/pyzmq_1635877593130/work
 requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1637771257551/work
 requests-oauthlib @ file:///home/conda/feedstock_root/build_artifacts/requests-oauthlib_1595492159598/work
 rsa @ file:///home/conda/feedstock_root/build_artifacts/rsa_1637781155505/work
+scikit-learn==1.0.2
 scipy @ file:///Users/runner/miniforge3/conda-bld/scipy_1637806880936/work
 Send2Trash @ file:///home/conda/feedstock_root/build_artifacts/send2trash_1628511208346/work
 six @ file:///home/conda/feedstock_root/build_artifacts/six_1590081179328/work
@@ -117,6 +119,7 @@ tensorflow-metal==0.3.0
 termcolor==1.1.0
 terminado @ file:///Users/runner/miniforge3/conda-bld/terminado_1636052406972/work
 testpath @ file:///home/conda/feedstock_root/build_artifacts/testpath_1621261527237/work
+threadpoolctl==3.0.0
 tornado @ file:///Users/runner/miniforge3/conda-bld/tornado_1635819711289/work
 tqdm==4.62.3
 traitlets @ file:///home/conda/feedstock_root/build_artifacts/traitlets_1635260543454/work
