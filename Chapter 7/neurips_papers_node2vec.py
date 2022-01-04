@@ -2,7 +2,6 @@ import gensim
 import logging
 import numpy as np
 import os
-import shutil
 import tensorflow as tf
 
 from scipy.sparse import csr_matrix
