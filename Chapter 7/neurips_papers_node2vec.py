@@ -3,6 +3,7 @@ import logging
 import numpy as np
 import os
 import tensorflow as tf
+from tqdm import tqdm
 
 from scipy.sparse import csr_matrix
 # from scipy.stats import spearmanr
@@ -61,33 +62,39 @@ def construct_random_walks(E, n, alpha, l, ofile):
     if os.path.exists(ofile):
         print("random walks generated already, skipping")
         return
-    f = open(ofile, "w")
-    for i in range(E.shape[0]):  # for each vertex
-        if i % 100 == 0:
-            print("{:d} random walks generated from {:d} starting vertices"
-                .format(n * i, i))
-        if i <= 3273:
-            continue
-        for j in range(n):       # construct n random walks
-            curr = i
-            walk = [curr]
-            target_nodes = np.nonzero(E[curr])[1]
-            for k in range(l):   # each of max length l, restart prob alpha
-                # should we restart?
-                if np.random.random() < alpha and len(walk) > 5:
-                    break
-                # choose one outgoing edge and append to walk
-                try:
-                    curr = np.random.choice(target_nodes)
-                    walk.append(curr)
-                    target_nodes = np.nonzero(E[curr])[1]
-                except ValueError:
-                    continue
-            f.write("{:s}\n".format(" ".join([str(x) for x in walk])))
+    
+    with open(ofile, 'w') as f:
+        rangeOfShapes = range(E.shape[0])
+        pbar = tqdm(total=len(rangeOfShapes)) # Init pbar
+        
+        for i in rangeOfShapes:  # for each vertex
+            if i % 100 == 0:
+                print("{:d} random walks generated from {:d} starting vertices"
+                    .format(n * i, i))
+            if i <= 3273:
+                continue
+            for j in range(n):       # construct n random walks
+                curr = i
+                walk = [curr]
+                target_nodes = np.nonzero(E[curr])[1]
+                for k in range(l):   # each of max length l, restart prob alpha
+                    # should we restart?
+                    if np.random.random() < alpha and len(walk) > 5:
+                        break
+                    # choose one outgoing edge and append to walk
+                    try:
+                        curr = np.random.choice(target_nodes)
+                        walk.append(curr)
+                        target_nodes = np.nonzero(E[curr])[1]
+                    except ValueError:
+                        continue
+                f.write("{:s}\n".format(" ".join([str(x) for x in walk])))
+            
+            pbar.update(n=1) # Increments counter
 
-    print("{:d} random walks generated from {:d} starting vertices, COMPLETE"
-        .format(n * i, i))
-    f.close()
+
+        print("{:d} random walks generated from {:d} starting vertices, COMPLETE"
+            .format(n * i, i))
 
 
 class Documents(object):
@@ -111,7 +118,7 @@ def train_word2vec_model(random_walks_file, model_file):
     docs = Documents(random_walks_file)
     model = gensim.models.Word2Vec(
         docs,
-        size=128,    # size of embedding vector
+        vector_size=128,    # size of embedding vector
         window=10,   # window size
         sg=1,        # skip-gram model
         min_count=2,
