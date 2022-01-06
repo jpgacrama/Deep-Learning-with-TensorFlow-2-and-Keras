@@ -124,6 +124,7 @@ def train_word2vec_model(random_walks_file, model_file):
         min_count=2,
         workers=4
     )
+
     model.train(
         docs, 
         total_examples=model.corpus_count,
