@@ -9,7 +9,7 @@ import tensorflow_hub as hub
 # ])
 # print(embeddings.shape)
 
-module_url = "https://tfhub.dev/google/elmo/2"
+module_url = "https://tfhub.dev/google/elmo/3"
 tf.compat.v1.disable_eager_execution()
 elmo = hub.Module(module_url, trainable=False)
 embeddings = elmo([
