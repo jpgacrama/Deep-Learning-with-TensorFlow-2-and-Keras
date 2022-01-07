@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow_hub as hub
 
-module_url = "https://tfhub.dev/google/universal-sentence-encoder/2"
+module_url = "https://tfhub.dev/google/universal-sentence-encoder/4"
 tf.compat.v1.disable_eager_execution()
 
 model = hub.Module(module_url)
