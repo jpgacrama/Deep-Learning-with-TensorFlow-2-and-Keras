@@ -330,23 +330,23 @@ encoder = Encoder(vocab_size_en+1, embedding_dim, maxlen_en, encoder_dim)
 decoder = Decoder(vocab_size_fr+1, embedding_dim, maxlen_fr, decoder_dim)
 
 # # Test code for encoder and decoder with attention
-# for encoder_in, decoder_in, decoder_out in train_dataset:
-#     print("inputs:", encoder_in.shape, decoder_in.shape, decoder_out.shape)
-#     encoder_state = encoder.init_state(batch_size)
-#     encoder_out, encoder_state = encoder(encoder_in, encoder_state)
-#     decoder_state = encoder_state
-#     decoder_pred = []
-#     for t in range(decoder_out.shape[1]):
-#         decoder_in_t = decoder_in[:, t]
-#         decoder_pred_t, decoder_state, _ = decoder(decoder_in_t,
-#             decoder_state, encoder_out)
-#         decoder_pred.append(decoder_pred_t.numpy())
-#     decoder_pred = tf.squeeze(np.array(decoder_pred), axis=2)
-#     break
-# print("encoder input          :", encoder_in.shape)
-# print("encoder output         :", encoder_out.shape, "state:", encoder_state.shape)
-# print("decoder output (logits):", decoder_pred.shape, "state:", decoder_state.shape)
-# print("decoder output (labels):", decoder_out.shape)
+for encoder_in, decoder_in, decoder_out in train_dataset:
+    print("inputs:", encoder_in.shape, decoder_in.shape, decoder_out.shape)
+    encoder_state = encoder.init_state(batch_size)
+    encoder_out, encoder_state = encoder(encoder_in, encoder_state)
+    decoder_state = encoder_state
+    decoder_pred = []
+    for t in range(decoder_out.shape[1]):
+        decoder_in_t = decoder_in[:, t]
+        decoder_pred_t, decoder_state, _ = decoder(decoder_in_t,
+            decoder_state, encoder_out)
+        decoder_pred.append(decoder_pred_t.numpy())
+    decoder_pred = tf.squeeze(np.array(decoder_pred), axis=2)
+    break
+print("encoder input          :", encoder_in.shape)
+print("encoder output         :", encoder_out.shape, "state:", encoder_state.shape)
+print("decoder output (logits):", decoder_pred.shape, "state:", decoder_state.shape)
+print("decoder output (labels):", decoder_out.shape)
 
 # Bahdanau:
 # encoder input          : (64, 8)
